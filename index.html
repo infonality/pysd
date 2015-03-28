@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Pysd : System Dynamics Modeling in Python">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Pysd</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/JamesPHoughton/pysd">View on GitHub</a>
+
+          <h1 id="project_title">Pysd</h1>
+          <h2 id="project_tagline">System Dynamics Modeling in Python</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/JamesPHoughton/pysd/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/JamesPHoughton/pysd/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="pysd" class="anchor" href="#pysd" aria-hidden="true"><span class="octicon octicon-link"></span></a>PySD</h1>
+
+<p>System Dynamics Modeling in Python</p>
+
+<h3>
+<a id="status" class="anchor" href="#status" aria-hidden="true"><span class="octicon octicon-link"></span></a>Status</h3>
+
+<p>Version 0.1.1 complete</p>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>To install via python package index:</p>
+
+<pre><code>    pip install pysd
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>To import a model from XMILE:</p>
+
+<pre><code>    import pysd
+    model = pysd.read_XMILE('xmile_model_file.xmile')
+</code></pre>
+
+<p>To import a model from Vensim:</p>
+
+<pre><code>    import pysd
+    model = pysd.read_vensim('vensim_model_file.mdl')
+</code></pre>
+
+<p>To run the model:</p>
+
+<pre><code>    model.run()
+</code></pre>
+
+<p>To run the model with modified parameters:</p>
+
+<pre><code>    model.run(params={'parameter_name':value})
+</code></pre>
+
+<p>Model results are by default given as pandas dataframes, so to plot output:</p>
+
+<pre><code>    stocks = model.run()
+    stocks.plot()
+</code></pre>
+
+<p>To measure model values as arbitrary timestamps:</p>
+
+<pre><code>    measurements = model.measure(elements=['stock1','flow1'], timestamps=range(1,20))
+</code></pre>
+
+<p>To print debugging output when running or measuring models:</p>
+
+<pre><code>    model.debug = True
+    model.run()
+</code></pre>
+
+<h3>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h3>
+
+<ul>
+<li>parameter space exploration: <a href="http://nbviewer.ipython.org/github/JamesPHoughton/pysd/blob/master/example_models/SIR/SIR%20Exploration.ipynb">SIR Model</a>
+</li>
+<li>running models interactively in real-time: <a href="http://nbviewer.ipython.org/github/JamesPHoughton/pysd/blob/master/example_models/Delay%20Game/Nth%20Order%20Delay%20Demo.ipynb">Delay Game</a>
+</li>
+<li>using ipython's <a href="http://ipython.org/ipython-doc/dev/parallel/parallel_intro.html">parallelization capability</a> to speed up Monte Carlo Analysis: <a href="http://nbviewer.ipython.org/github/JamesPHoughton/pysd/blob/master/example_models/Bank%20Balance/Parallel%20Monte%20Carlo%20Simulation.ipynb">Bank Balance Example</a>
+</li>
+<li>performing Markov Chain Monte Carlo using <a href="http://pymc-devs.github.io/pymc/README.html">pymc</a> to estimate the number of pennies in circulation from data collected in a penny jar: <a href="http://nbviewer.ipython.org/github/JamesPHoughton/pysd/blob/master/example_models/Penny%20Jar/Penny%20Jar.ipynb">Penny Jar Inference</a>
+</li>
+<li>several optimization methods using <a href="http://docs.scipy.org/doc/scipy-0.14.0/reference/optimize.html">scipy.optimize</a>: <a href="http://nbviewer.ipython.org/github/JamesPHoughton/pysd/blob/master/example_models/Predator-Prey/Predator%20-%20Prey.ipynb">Predator-Prey Model</a>
+</li>
+</ul>
+
+<h2>
+<a id="about-the-project" class="anchor" href="#about-the-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>About the project</h2>
+
+<p>This project is a simple library for running <a href="http://en.wikipedia.org/wiki/System_dynamics">System Dynamics</a> models in python, with the purpose of improving integration of <em>Big Data</em> and <em>Machine Learning</em> into the SD workflow. </p>
+
+<h3>
+<a id="why-create-a-new-sd-modeling-engine" class="anchor" href="#why-create-a-new-sd-modeling-engine" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why create a new SD modeling engine?</h3>
+
+<p>There are a number of great SD programs out there (<a href="http://vensim.com/">Vensim</a>, <a href="http://www.iseesystems.com/Softwares/Business/ithinkSoftware.aspx">iThink</a>, <a href="http://www.anylogic.com/system-dynamics">AnyLogic</a>, <a href="http://insightmaker.com/">Insight Maker</a>, <a href="http://forio.com/">Forio</a>, and <a href="http://en.wikipedia.org/wiki/List_of_system_dynamics_software">others</a>). Additionally, there are a number of existing python-based dynamic system modeling tools, such as <a href="http://www.ni.gsu.edu/%7Erclewley/PyDSTool/FrontPage.html">PyDSTool</a> and <a href="http://www.scipy.org/topical-software.html#dynamical-systems">others</a>. In order not to waste our effort, or fall victim to the <a href="http://en.wikipedia.org/wiki/Not_invented_here">Not-Invented-Here</a> fallacy, we should have a very good reason for starting a new project. </p>
+
+<p>That reason is this: There is a whole world of computational tools being developed in the larger technical community. <strong>We should directly use the tools that other people are building, instead of replicating their functionality in SD specific software.</strong> The best way to do this is to bring specific SD functionality to the domain where those other tools are being developed. </p>
+
+<p>Several successful projects have built harnesses to allow control of SD programs from python. This can be an unwieldy solution, and in order to scale the analysis to clusters of computers running millions of iterations, with speed and precise control of execution, an integrated solution is preferred.</p>
+
+<p>This approach allows SD modelers to take advantage of the most recent developments in data science, and focus our efforts on improving the part of the stack that is unique to System Dynamics modeling.</p>
+
+<h4>
+<a id="what-computational-tools-are-we-talking-about" class="anchor" href="#what-computational-tools-are-we-talking-about" aria-hidden="true"><span class="octicon octicon-link"></span></a>What computational tools are we talking about?</h4>
+
+<p>System dynamics and other programming and analysis techniques require some common components:</p>
+
+<p>Data components:</p>
+
+<ol>
+<li>Data gathering - possibly in real time, from web sources</li>
+<li>Data storage - potentially in distributed, cloud oriented databases</li>
+<li>Data formatting, verification, transformation, </li>
+<li>Timeseries data interpolation and alignment</li>
+<li>Geographic data manipulation</li>
+</ol>
+
+<p>Computational components:</p>
+
+<ol>
+<li>High speed numerical integration - gpu techniques, etc</li>
+<li>Multiprocessing - possibly distributed, cloud based parallel computing</li>
+<li>Statistical analysis / inference</li>
+<li>Machine Learning algorithms / Neural Networks / AI</li>
+<li>Optimization techniques</li>
+</ol>
+
+<p>Display components:</p>
+
+<ol>
+<li>Real-time data visualization </li>
+<li>Interactive data visualization - possibly web based, at scale</li>
+<li>Theory/documentation/code/result colocation and presentation</li>
+</ol>
+
+<p>Collaboration components:</p>
+
+<ol>
+<li>Real-time collaboration</li>
+<li>Version control</li>
+<li>Open sourcing/archiving</li>
+<li>Analysis replicability - improving research replicating</li>
+</ol>
+
+<p>The Future...</p>
+
+<h4>
+<a id="what-components-are-specific-to-system-dynamics" class="anchor" href="#what-components-are-specific-to-system-dynamics" aria-hidden="true"><span class="octicon octicon-link"></span></a>What components are specific to System Dynamics?</h4>
+
+<ol>
+<li>System Dynamics model equations</li>
+<li>System Dynamics model diagrams - stock and flow, CLD</li>
+<li>Advanced SD concepts - coflows, aging chains, etc.</li>
+<li>Dynamic model analysis tools</li>
+<li>Future Developments in SD modeling</li>
+</ol>
+
+<p>These are the components that should be included in PySD.</p>
+
+<h3>
+<a id="complementary-projects" class="anchor" href="#complementary-projects" aria-hidden="true"><span class="octicon octicon-link"></span></a>Complementary Projects</h3>
+
+<p>The most valuable component for better integrating models with <em>basically anything else</em> is a standard language for communicating the structure of those models. That language is <a href="http://www.iseesystems.com/community/support/XMILE.aspx">XMILE</a>. The draft specifications for this have been finalized and the standard should be approved in the next few months.</p>
+
+<p>A python library for analyzing system dynamics models called the <a href="http://simulation.tbm.tudelft.nl/ema-workbench/contents.html">Exploratory Modeling and Analysis (EMA) Workbench</a> is being developed by <a href="http://www.tbm.tudelft.nl/en/about-faculty/departments/multi-actor-systems/policy-analysis/people/erik-pruyt/">Erik Pruyt</a> and <a href="https://github.com/quaquel">Jan Kwakkel</a> at TU Delft. This package implements a variety of analysis methods that are unique to dynamic models, and could work very tightly with PySD. </p>
+
+<p>An excellent javascript library called <a href="https://github.com/bpowers/sd.js/tree/master">sd.js</a> created by Bobby Powers at <a href="http://sdlabs.io/">SDlabs</a> exists as a standalone SD engine, and provides a beautiful front end. This front end could be rendered as an iPython widget to facilitate display of SD models.</p>
+
+<p>The <a href="http://www.ie.boun.edu.tr/labs/sesdyn/projects/bats/index.html">Behavior Analysis and Testing Software(BATS)</a> delveloped by <a href="http://www.ie.boun.edu.tr/people/pages/yucel.html">Gönenç Yücel</a> includes a really neat method for categorizing behavior modes and exploring parameter space to determine the boundaries between them.</p>
+
+<h3>
+<a id="notional-capabilities-development-pathway" class="anchor" href="#notional-capabilities-development-pathway" aria-hidden="true"><span class="octicon octicon-link"></span></a>Notional Capabilities Development Pathway</h3>
+
+<p>The initial use case would be to import a fully developed SD model (created in Vensim, or Stella/iThink, etc.) into PySD via the XMILE format; and then use third party tools to perform statistical analysis and inference, and to interface with external data.</p>
+
+<h4>
+<a id="current-features" class="anchor" href="#current-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Current Features</h4>
+
+<ol>
+<li>Basic XMILE and Vensim parser, limited to a subset of functions for which the Markov Property holds</li>
+<li>Established library structure and data formats</li>
+<li>Simulation using existing python integration tools</li>
+<li>Basic demonstrations of integration with python Data Science functionality</li>
+<li>Run-at-a-time parameter modification</li>
+</ol>
+
+<h4>
+<a id="planned-features" class="anchor" href="#planned-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Planned Features</h4>
+
+<ol>
+<li>Step-at-a-time parameter modification / time-variant exogenous inputs</li>
+<li>Extended backends for storing parameters and output values</li>
+<li>More extensive XMILE and Vensim model parsers</li>
+<li>Demonstration of integration with Machine Learning/Monte Carlo/Statistical Methods</li>
+<li>Integration with EMA Workbench</li>
+</ol>
+
+<h4>
+<a id="possible-features" class="anchor" href="#possible-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Possible features</h4>
+
+<ul>
+<li>Embed SD.js front end in iPython widget</li>
+<li>XMILE display component parser</li>
+<li>Customizations of external Data Science tools for dynamic systems</li>
+<li>Incorporation of analysis tools specific to dynamic systems</li>
+<li>Python methods for programmatically manipulating SD model structure</li>
+<li>Additional SD tools: checks for model units, value limits, etc.</li>
+<li>Python methods for saving XMILE models</li>
+<li>Manage varying the time step of integration/adaptive integration time step</li>
+<li>Infer logical ways to automatically lay out stock and flow diagrams</li>
+<li>Add hooks to vensim, other SD programs, to allow running models with other engines</li>
+<li>Turn off and on 'traces' or records of the values of variables</li>
+<li>Show different 'submodels' in the model diagram</li>
+<li>Infer units when possible from other areas</li>
+<li>Hover over stock/flow elements to get things like units, descriptions, values, etc.</li>
+<li>Output DataFrame including tags for units</li>
+</ul>
+
+<h3>
+<a id="pysd-design-philosophy" class="anchor" href="#pysd-design-philosophy" aria-hidden="true"><span class="octicon octicon-link"></span></a>PySD Design Philosophy</h3>
+
+<ul>
+<li>Do as little as possible. 
+
+<ul>
+<li>Anything that is not endemic to System Dynamics (such as plotting, integration, fitting, etc) should either be implemented using external tools, or omitted. </li>
+<li>Stick to SD. Let other disciplines (ABM, Discrete Event Simulation, etc) create their own tools.</li>
+<li>Use external model creation tools</li>
+</ul>
+</li>
+<li>Use the language of system dynamics.</li>
+<li>Be simple to use. Let SD practitioners who haven't used python before understand the basics.</li>
+<li>Take advantage of general python constructions and best practices.</li>
+<li>Be simple to maintain.<br>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Pysd maintained by <a href="https://github.com/JamesPHoughton">JamesPHoughton</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
